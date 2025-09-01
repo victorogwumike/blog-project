@@ -6,13 +6,15 @@ def home(request):
     posts = BlogPost.objects.all().order_by("-created_at")
     return render(request, "blog/home.html", {"posts": posts})
 
+
 def create_post(request):
     if request.method == "POST":
         title = request.POST["title"]
         content = request.POST["content"]
-        BlogPost.objects.create(title=title, content=content, author=request.user if request.user.is_authenticated else None)
+        BlogPost.objects.create(title=title, content=content)  # 🔹 removed author
         return redirect("home")
     return render(request, "blog/create_post.html")
+
 
 def edit_post(request, post_id):
     post = get_object_or_404(BlogPost, id=post_id)
